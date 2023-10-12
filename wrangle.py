@@ -12,7 +12,7 @@ def wrangle_curriculum():
     engineering a datetime column and dropping old date and time columns, 
     changing datetime column to datetime type, setting datetime to index,
     engineering columns for each time attribute individually, filling nulls with zero for users
-    that have no cohort_id, 
+    that have no cohort_id, and engineering a column to encode lesson
 
     '''
     df = pd.read_table('/Users/colt/Downloads/anonymized-curriculum-access.txt', sep=' ')
@@ -26,4 +26,5 @@ def wrangle_curriculum():
     df['weekday'] = df.index.day_name()
     df['hour'] = df.index.hour
     df = df.fillna(0)
+    df = df.assign(lesson_code=lambda x: x.groupby(['lesson']).ngroup())
     return df
